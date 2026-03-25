@@ -1,0 +1,230 @@
+{
+  "info": {
+    "name": "Blockchain Python — 3 Node Network",
+    "_postman_id": "bc-python-3node-2026",
+    "description": "Koleksi lengkap untuk mensimulasikan Blockchain dengan digital signature, mining reward, dan sinkronisasi 3 node.\n\nJalankan: bash run_nodes.sh\n\nNode:\n- Node 1: http://localhost:5000\n- Node 2: http://localhost:5001\n- Node 3: http://localhost:5002",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "node1", "value": "http://localhost:5000", "type": "string" },
+    { "key": "node2", "value": "http://localhost:5001", "type": "string" },
+    { "key": "node3", "value": "http://localhost:5002", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "1. Wallet",
+      "item": [
+        {
+          "name": "Generate Wallet (Node 1)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{node1}}/wallet/new", "host": ["{{node1}}"], "path": ["wallet","new"] },
+            "description": "Generate ECDSA SECP256K1 key pair. Simpan private_key, public_key, address."
+          }
+        },
+        {
+          "name": "Generate Wallet (Node 2)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{node2}}/wallet/new", "host": ["{{node2}}"], "path": ["wallet","new"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Transaksi",
+      "item": [
+        {
+          "name": "Tambah Transaksi Valid (Node 1)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sender\": \"<address dari /wallet/new>\",\n  \"receiver\": \"Bob\",\n  \"amount\": 50,\n  \"public_key\": \"<public_key dari /wallet/new>\",\n  \"signature\": \"<signature dari script sign_tx.py>\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": { "raw": "{{node1}}/transactions/new", "host": ["{{node1}}"], "path": ["transactions","new"] },
+            "description": "Kirim transaksi bertandatangan ke Node 1."
+          }
+        },
+        {
+          "name": "Tambah Transaksi — Signature Palsu (Node 1)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sender\": \"Alice\",\n  \"receiver\": \"Bob\",\n  \"amount\": 50,\n  \"public_key\": \"-----BEGIN PUBLIC KEY-----\\nMFYwEAYHKoZI...\\n-----END PUBLIC KEY-----\\n\",\n  \"signature\": \"000000000000000000000000000000000000000000000000\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": { "raw": "{{node1}}/transactions/new", "host": ["{{node1}}"], "path": ["transactions","new"] },
+            "description": "Harus ditolak — signature palsu."
+          }
+        },
+        {
+          "name": "Verifikasi Signature Saja (Node 1)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sender\": \"<address>\",\n  \"receiver\": \"Bob\",\n  \"amount\": 50,\n  \"public_key\": \"<public_key>\",\n  \"signature\": \"<signature>\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": { "raw": "{{node1}}/transactions/verify", "host": ["{{node1}}"], "path": ["transactions","verify"] },
+            "description": "Verifikasi signature tanpa menambah ke pool."
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Mining",
+      "item": [
+        {
+          "name": "Mine Block (Node 1 — Miner Alice)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"miner_address\": \"Alice\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": { "raw": "{{node1}}/mine", "host": ["{{node1}}"], "path": ["mine"] },
+            "description": "Mine pending transactions + reward 10 koin otomatis ke Alice. Broadcast ke peer setelah selesai."
+          }
+        },
+        {
+          "name": "Mine Block (Node 2 — Miner Bob)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"miner_address\": \"Bob\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": { "raw": "{{node2}}/mine", "host": ["{{node2}}"], "path": ["mine"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Chain",
+      "item": [
+        {
+          "name": "Lihat Chain — Node 1",
+          "request": {
+            "method": "GET", "header": [],
+            "url": { "raw": "{{node1}}/chain", "host": ["{{node1}}"], "path": ["chain"] }
+          }
+        },
+        {
+          "name": "Lihat Chain — Node 2",
+          "request": {
+            "method": "GET", "header": [],
+            "url": { "raw": "{{node2}}/chain", "host": ["{{node2}}"], "path": ["chain"] }
+          }
+        },
+        {
+          "name": "Lihat Chain — Node 3",
+          "request": {
+            "method": "GET", "header": [],
+            "url": { "raw": "{{node3}}/chain", "host": ["{{node3}}"], "path": ["chain"] }
+          }
+        },
+        {
+          "name": "Validasi Chain — Node 1",
+          "request": {
+            "method": "GET", "header": [],
+            "url": { "raw": "{{node1}}/chain/validate", "host": ["{{node1}}"], "path": ["chain","validate"] },
+            "description": "Verifikasi integritas chain: hash konsisten, link antar block benar, semua signature valid."
+          }
+        },
+        {
+          "name": "Cek Balance Alice (Node 1)",
+          "request": {
+            "method": "GET", "header": [],
+            "url": { "raw": "{{node1}}/balance/Alice", "host": ["{{node1}}"], "path": ["balance","Alice"] }
+          }
+        },
+        {
+          "name": "Cek Balance Bob (Node 1)",
+          "request": {
+            "method": "GET", "header": [],
+            "url": { "raw": "{{node1}}/balance/Bob", "host": ["{{node1}}"], "path": ["balance","Bob"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Node & Sinkronisasi",
+      "item": [
+        {
+          "name": "List Peers — Node 1",
+          "request": {
+            "method": "GET", "header": [],
+            "url": { "raw": "{{node1}}/nodes", "host": ["{{node1}}"], "path": ["nodes"] }
+          }
+        },
+        {
+          "name": "Register Peers — Node 1",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nodes\": [\"localhost:5001\", \"localhost:5002\"]\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": { "raw": "{{node1}}/nodes/register", "host": ["{{node1}}"], "path": ["nodes","register"] }
+          }
+        },
+        {
+          "name": "Register Peers — Node 2",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nodes\": [\"localhost:5000\", \"localhost:5002\"]\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": { "raw": "{{node2}}/nodes/register", "host": ["{{node2}}"], "path": ["nodes","register"] }
+          }
+        },
+        {
+          "name": "Register Peers — Node 3",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nodes\": [\"localhost:5000\", \"localhost:5001\"]\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": { "raw": "{{node3}}/nodes/register", "host": ["{{node3}}"], "path": ["nodes","register"] }
+          }
+        },
+        {
+          "name": "Resolve Consensus — Node 2",
+          "request": {
+            "method": "GET", "header": [],
+            "url": { "raw": "{{node2}}/nodes/resolve", "host": ["{{node2}}"], "path": ["nodes","resolve"] },
+            "description": "Node 2 jalankan Nakamoto consensus — ambil chain terpanjang yang valid dari semua peer."
+          }
+        },
+        {
+          "name": "Resolve Consensus — Node 3",
+          "request": {
+            "method": "GET", "header": [],
+            "url": { "raw": "{{node3}}/nodes/resolve", "host": ["{{node3}}"], "path": ["nodes","resolve"] }
+          }
+        }
+      ]
+    }
+  ]
+}
