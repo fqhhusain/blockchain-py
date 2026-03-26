@@ -98,3 +98,11 @@ class TestNewTransactionValidation:
     def test_empty_body_returns_400(self, client):
         resp = client.post("/transactions/new", json={})
         assert resp.status_code == 400
+
+    def test_duplicate_transaction_returns_400(self, client):
+        payload = _make_payload()
+        first = client.post("/transactions/new", json=payload)
+        assert first.status_code == 201
+
+        second = client.post("/transactions/new", json=payload)
+        assert second.status_code == 400

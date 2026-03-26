@@ -94,9 +94,12 @@ class Blockchain:
         """
         Validate and add *transaction* to the pending pool.
 
-        Returns True on success, False if the transaction is invalid.
+        Returns True on success, False if the transaction is invalid or
+        already present in the pending pool.
         """
         if not transaction.is_valid():
+            return False
+        if any(tx.to_full_dict() == transaction.to_full_dict() for tx in self.pending_transactions):
             return False
         self.pending_transactions.append(transaction)
         self._save_state()

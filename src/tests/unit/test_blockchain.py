@@ -62,6 +62,12 @@ class TestTransactionPool:
             blockchain.add_transaction(make_signed_tx())
         assert len(blockchain.pending_transactions) == 3
 
+    def test_reject_duplicate_pending_transaction(self, blockchain):
+        tx = make_signed_tx()
+        assert blockchain.add_transaction(tx) is True
+        assert blockchain.add_transaction(tx) is False
+        assert len(blockchain.pending_transactions) == 1
+
 
 # ── Mining ────────────────────────────────────────────────────────────
 class TestMining:
