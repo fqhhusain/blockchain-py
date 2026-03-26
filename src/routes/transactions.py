@@ -2,6 +2,7 @@
 from flask import Blueprint, current_app, jsonify, request
 
 from core.transaction import Transaction
+from network.network_utils import broadcast_transaction
 from routes.api_response import error_response
 
 transactions_bp = Blueprint("transactions", __name__)
@@ -58,6 +59,10 @@ def new_transaction():
             message="Transaction could not be added",
             status=400,
         )
+
+    peers = current_app.node.get_peers()
+    if peers:
+        broadcast_transaction(peers, tx.to_full_dict())
 
     return (
         jsonify(

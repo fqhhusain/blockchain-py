@@ -178,6 +178,43 @@ class TestTransactionBroadcast:
             resp = client.post("/transactions/new", json=tx)
             assert resp.status_code == 400
 
+    def test_submit_on_a_then_mine_on_b_includes_same_tx(self, linked_three_nodes):
+        """
+        Cross-node mempool propagation:
+        submit tx to A, broadcast to peers, mine on B, and ensure tx is included.
+        """
+        ca, cb, cc, apps = linked_three_nodes
+        tx = _signed_tx("Bob", 12.0)
+
+        def forward_to_peer_clients(peers, tx_data):
+            # In-process test environment: emulate peer receipt directly
+            # to avoid recursive re-broadcast through /transactions/new.
+            peer_apps = {
+                "localhost:5001": apps[1],
+                "localhost:5002": apps[2],
+            }
+            for peer in peers:
+                app = peer_apps.get(peer)
+                if app is not None:
+                    app.blockchain.add_transaction(Transaction.from_dict(tx_data))
+
+        with patch("routes.transactions.broadcast_transaction", side_effect=forward_to_peer_clients):
+            submit = ca.post("/transactions/new", json=tx)
+            assert submit.status_code == 201
+
+        mine_resp = cb.post("/mine", json={"miner_address": "MinerB"})
+        assert mine_resp.status_code == 200
+
+        mined_block = mine_resp.get_json()["block"]
+        user_txs = [
+            t for t in mined_block["transactions"]
+            if t["sender"] != "NETWORK"
+        ]
+        assert len(user_txs) == 1
+        assert user_txs[0]["sender"] == tx["sender"]
+        assert user_txs[0]["receiver"] == tx["receiver"]
+        assert float(user_txs[0]["amount"]) == float(tx["amount"])
+
 
 # ── Scenario 4: Digital signature validation during sync ─────────────
 

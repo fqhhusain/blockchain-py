@@ -481,6 +481,19 @@ GET http://localhost:5000/chain/validate
 
 ### 5.5 Sinkronisasi Antar-Node
 
+#### Catatan Penting: Sinkronisasi Pending Transaction
+
+Selain sinkronisasi chain (longest-chain consensus), sistem ini juga menyinkronkan **pending transaction pool**.
+Ketika Node menerima `POST /transactions/new` dan transaksi valid, Node akan broadcast transaksi yang sama ke peer melalui `network_utils.broadcast_transaction()`.
+
+Artinya, skenario berikut sekarang didukung dengan benar:
+
+1. Submit transaksi ke Node 1 (`:5000`)
+2. Mine di Node 2 (`:5001`)
+3. Transaksi dari Node 1 tetap bisa ikut termining di Node 2 karena sudah dipropagasikan ke peer
+
+Ini lebih mendekati perilaku jaringan blockchain nyata, di mana node penerima transaksi dan node miner sering berbeda.
+
 #### Skenario: Mine di Node 1, Sync ke Node 2 dan 3
 
 **Langkah 1 — Pastikan Peer Terdaftar**
@@ -531,6 +544,33 @@ POST http://localhost:5000/mine   →  { "miner_address": "Alice" }
 ```
 
 Sekarang Node 1 punya chain length = 3, Node 2 & 3 masih = 1 (genesis).
+
+---
+
+#### Skenario Tambahan (Lintas-Node): Submit di Node 1, Mine di Node 2
+
+**Langkah A — Submit transaksi ke Node 1**
+
+```
+POST http://localhost:5000/transactions/new
+```
+
+Jika valid, Node 1 menambahkan transaksi ke pending pool lokal dan langsung broadcast ke peer (`:5001`, `:5002`).
+
+**Langkah B — Mine di Node 2**
+
+```
+POST http://localhost:5001/mine   →  { "miner_address": "Miner-Node2" }
+```
+
+Karena pending transaction sudah dipropagasikan, Node 2 dapat memasukkan transaksi tersebut ke block yang ditambang (bersama coinbase reward untuk `Miner-Node2`).
+
+**Langkah C — Verifikasi hasil**
+
+1. Cek `GET /chain` di Node 2, pastikan transaksi user muncul dalam block terbaru.
+2. Cek `GET /nodes/resolve` di Node 1 dan Node 3 (jika belum auto-sync), lalu bandingkan hash block terakhir ketiga node.
+
+> ✅ Dengan alur ini, sinkronisasi yang dibuktikan bukan hanya chain setelah mining, tetapi juga propagasi transaksi sebelum mining.
 
 ---
 
@@ -603,7 +643,12 @@ GET http://localhost:5002/nodes/resolve
 ---
 
 **Catatan tentang Auto-Broadcast:**
-Setiap kali mining berhasil (`POST /mine`), Node 1 secara otomatis memanggil `GET /nodes/resolve` pada semua peer-nya. Artinya **Node 2 dan Node 3 biasanya sudah tersinkron tanpa harus memanggil `/nodes/resolve` secara manual**, kecuali saat node baru pertama kali bergabung ke jaringan.
+Sistem melakukan dua jenis broadcast otomatis:
+
+1. Saat transaksi baru valid (`POST /transactions/new`): broadcast payload transaksi ke peer agar pending pool antar-node konsisten.
+2. Saat mining berhasil (`POST /mine`): trigger `GET /nodes/resolve` pada peer agar chain cepat tersinkron.
+
+Artinya, pada flow normal, node peer biasanya sudah sinkron baik di level pending transaction maupun chain tanpa langkah manual tambahan (kecuali node baru bergabung atau ada peer sementara offline).
 
 ---
 
@@ -698,9 +743,10 @@ def resolve_conflicts(blockchain, peers):
 4. POST /transactions/new  (Node 1)
       → server verifikasi signature
       → jika valid: masuk pending pool
+  → broadcast transaksi ke Node 2 & 3
       → jika invalid: 400 rejected
 
-5. POST /mine  { miner_address: "Alice" }  (Node 1)
+5. POST /mine  { miner_address: "Alice" }  (Node 1 atau node peer lain)
       → bundle pending_transactions + coinbase reward
       → PoW: cari nonce sampai hash[:3] == "000"
       → block ditambahkan ke chain

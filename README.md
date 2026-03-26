@@ -25,6 +25,7 @@
     - [Run 3 Nodes (Recommended)](#run-3-nodes-recommended)
     - [Run Manually (Optional)](#run-manually-optional)
     - [Postman Collection](#postman-collection)
+    - [Quick Demo Script (Optional)](#quick-demo-script-optional)
   - [API Overview](#api-overview)
   - [Testing](#testing)
   - [Assignment Coverage](#assignment-coverage)
@@ -49,6 +50,7 @@ Main goals:
 High-level flow:
 - Each node runs its own Flask app and local blockchain state.
 - Transactions are validated before entering pending pool.
+- Valid transactions are broadcast to peers so pending pools stay in sync.
 - Mining seals pending transactions into a new block and adds miner reward.
 - Nodes synchronize using longest valid chain (Nakamoto-style consensus).
 
@@ -67,6 +69,7 @@ High-level flow:
 - Proof-of-Work mining with configurable difficulty.
 - Automatic miner reward transaction (coinbase).
 - Multi-node consensus (`/nodes/register`, `/nodes/resolve`).
+- Pending transaction propagation (`/transactions/new` broadcast to peers).
 - Wallet keypair generation endpoint.
 - Unit, functional, and integration tests.
 
