@@ -70,6 +70,7 @@ High-level flow:
 - Automatic miner reward transaction (coinbase).
 - Multi-node consensus (`/nodes/register`, `/nodes/resolve`).
 - Pending transaction propagation (`/transactions/new` broadcast to peers).
+- Duplicate pending transaction rejection (prevents rebroadcast loops).
 - Wallet keypair generation endpoint.
 - Unit, functional, and integration tests.
 

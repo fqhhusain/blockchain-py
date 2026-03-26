@@ -570,6 +570,12 @@ Karena pending transaction sudah dipropagasikan, Node 2 dapat memasukkan transak
 1. Cek `GET /chain` di Node 2, pastikan transaksi user muncul dalam block terbaru.
 2. Cek `GET /nodes/resolve` di Node 1 dan Node 3 (jika belum auto-sync), lalu bandingkan hash block terakhir ketiga node.
 
+**Bukti screenshot untuk laporan:**
+
+1. Request/response `POST /transactions/new` di Node 1 (status `201`, `pending_count` bertambah).
+2. Request/response `POST /mine` di Node 2 yang menampilkan block berisi transaksi user + reward.
+3. Response `GET /chain` di Node 2 yang memperlihatkan transaksi user sudah masuk ke chain.
+
 > ✅ Dengan alur ini, sinkronisasi yang dibuktikan bukan hanya chain setelah mining, tetapi juga propagasi transaksi sebelum mining.
 
 ---
@@ -647,6 +653,8 @@ Sistem melakukan dua jenis broadcast otomatis:
 
 1. Saat transaksi baru valid (`POST /transactions/new`): broadcast payload transaksi ke peer agar pending pool antar-node konsisten.
 2. Saat mining berhasil (`POST /mine`): trigger `GET /nodes/resolve` pada peer agar chain cepat tersinkron.
+
+Loop rebroadcast berhenti secara natural karena transaksi duplikat akan ditolak di pending pool (tidak ditambahkan ulang), sehingga node yang menerima duplikat tidak melakukan broadcast lanjutan.
 
 Artinya, pada flow normal, node peer biasanya sudah sinkron baik di level pending transaction maupun chain tanpa langkah manual tambahan (kecuali node baru bergabung atau ada peer sementara offline).
 
