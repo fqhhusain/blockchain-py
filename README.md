@@ -8,7 +8,7 @@
     <img src="https://img.shields.io/badge/Python-3.11%2B-blue" alt="Python">
     <img src="https://img.shields.io/badge/Flask-3.0-black" alt="Flask">
     <img src="https://img.shields.io/badge/Crypto-ECDSA%20SECP256K1-green" alt="Crypto">
-    <img src="https://img.shields.io/badge/Tests-126%20passed-brightgreen" alt="Tests">
+    <img src="https://img.shields.io/badge/Tests-129%20passed-brightgreen" alt="Tests">
 </p>
 
 ## Table of Contents
@@ -163,7 +163,7 @@ pytest -q
 ```
 
 Latest local result:
-- 126 passed
+- 129 passed
 
 Test layers:
 - Unit tests: core business logic.
