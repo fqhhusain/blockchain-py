@@ -23,7 +23,8 @@
     - [Prerequisites](#prerequisites)
     - [Installation](#installation)
     - [Run 3 Nodes (Recommended)](#run-3-nodes-recommended)
-    - [Run Manually (Optional)](#run-manually-optional)
+    - [Run Manually](#run-manually)
+    - [Opsi Persistensi](#opsi-persistensi)
     - [Postman Collection](#postman-collection)
     - [Quick Demo Script (Optional)](#quick-demo-script-optional)
   - [API Overview](#api-overview)
@@ -101,7 +102,7 @@ Optional: enable persistent storage per node (JSON files):
 BC_PERSIST=1 BC_DATA_DIR=.data bash run_nodes.sh
 ```
 
-### Run Manually (Optional)
+### Run Manually
 
 ```bash
 # Terminal 1
@@ -113,6 +114,18 @@ cd src && python app.py --port 5001
 # Terminal 3
 cd src && python app.py --port 5002
 ```
+
+### Opsi Persistensi 
+
+Secara default state blockchain disimpan in-memory. Untuk menyimpan chain dan pending pool per node ke file JSON:
+
+```bash
+BC_PERSIST=1 BC_DATA_DIR=.data bash run_nodes.sh
+```
+
+Catatan perilaku konsensus saat persistensi aktif:
+- Ketika node mengadopsi chain peer yang lebih panjang (`/nodes/resolve`), state lokal diganti.
+- Pending pool lokal di-reset, lalu state baru langsung disimpan ke file node terkait.
 
 ### Postman Collection
 
