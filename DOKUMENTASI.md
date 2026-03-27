@@ -9,7 +9,8 @@ Sebelum melakukan transaksi, pengguna harus membuat identitas kriptografi yang t
 
 ### A. Generate Wallet
 Pengujian dimulai dengan memanggil *endpoint* `/wallet/new` untuk membuat pasangan kunci (*keypair*) ECDSA SECP256K1 yang baru.
-![Generate Wallet](<C:/Users/Acer/Downloads/generate wallet.jpeg>)
+![image alt](https://github.com/fqhhusain/blockchain-py/blob/fb691b1023516327319c902bfc6da18fc5617642/img/Validasi_chain1.jpeg)
+
 *Gambar 1: Hasil generate wallet yang memberikan Address, Private Key, dan Public Key.*
 
 ### B. Membuat Digital Signature (Tanda Tangan Digital)
