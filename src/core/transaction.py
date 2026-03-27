@@ -75,8 +75,11 @@ class Transaction:
         Coinbase transactions (sender == MINER_ADDRESS) are always valid.
         All other transactions require a valid ECDSA signature.
         """
+
         if self.sender == MINER_ADDRESS:
             return True
+        if self.amount <= 0:
+            return False
         if not self.signature or not self.public_key:
             return False
 

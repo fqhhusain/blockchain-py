@@ -49,6 +49,8 @@
 
 ```
 blockchain-py/
+├── demo.sh                   ← demo end-to-end flow
+├── sign_tx.py                ← helper signing script untuk Postman demo
 ├── requirements.txt          ← flask, cryptography, requests
 ├── run_nodes.sh              ← spawn 3 node sekaligus (port 5000, 5001, 5002)
 ├── README.md
@@ -56,6 +58,7 @@ blockchain-py/
 └── src/
     ├── config.py             ← DIFFICULTY=3, MINING_REWARD=10, DEFAULT_PORT=5000
     ├── app.py                ← Flask factory + blueprint registration
+    ├── conftest.py           ← helper import path untuk pytest
     │
     ├── core/
     │   ├── wallet.py         ← generate_keys(), sign(), verify()
@@ -116,6 +119,18 @@ cd src && python app.py --port 5001
 # Terminal 3
 cd src && python app.py --port 5002
 ```
+
+### Opsi Persistensi (Opsional)
+
+Secara default state blockchain disimpan in-memory. Untuk menyimpan chain dan pending pool per node ke file JSON:
+
+```bash
+BC_PERSIST=1 BC_DATA_DIR=.data bash run_nodes.sh
+```
+
+Catatan perilaku konsensus saat persistensi aktif:
+- Ketika node mengadopsi chain peer yang lebih panjang (`/nodes/resolve`), state lokal diganti.
+- Pending pool lokal di-reset, lalu state baru langsung disimpan ke file node terkait.
 
 ### Import Postman Collection
 
@@ -673,14 +688,11 @@ Ketika `mine_pending_transactions(miner_address)` dipanggil:
 
 ```python
 # Satu transaksi reward otomatis ditambahkan ke block
-reward_tx = Transaction(
-    sender="NETWORK",    # sentinel — dikecualikan dari cek signature
-    receiver=miner_address,
-    amount=10.0,         # dari config.MINING_REWARD
-)
+reward_tx = Transaction.create_reward_transaction(miner_address)
+transactions_to_include = list(self.pending_transactions) + [reward_tx]
 ```
 
-Transaksi coinbase ini tidak membutuhkan signature karena diterbitkan oleh jaringan itu sendiri.
+Transaksi coinbase ini tidak membutuhkan signature karena diterbitkan oleh jaringan itu sendiri. Nilai reward diambil dari `config.MINING_REWARD` (bisa diubah via env `BC_REWARD`).
 
 ---
 
@@ -707,14 +719,30 @@ File: `network/consensus.py`
 ```python
 def resolve_conflicts(blockchain, peers):
     max_length = len(blockchain.chain)
+    new_chain = None
+
     for peer in peers:
         data = fetch_chain(peer)          # GET /chain dari peer
+        if data is None:
+            continue
+
+        peer_length = data.get("length", 0)
+        if peer_length <= max_length:
+            continue
+
         candidate = Blockchain.from_dict(data)
-        if len(candidate.chain) > max_length and candidate.is_chain_valid():
-            blockchain.chain = candidate.chain  # adopsi chain terpanjang
-            return True
+        if candidate.is_chain_valid():
+            max_length = peer_length
+            new_chain = candidate.chain
+
+    if new_chain is not None:
+        blockchain.replace_chain(new_chain)
+        return True
+
     return False
 ```
+
+Implementasi nyata memakai `replace_chain()` (bukan assignment langsung ke `blockchain.chain`) agar penggantian chain konsisten dengan manajemen pending pool dan penyimpanan state.
 
 ---
 

@@ -68,6 +68,10 @@ class TestValidation:
     def test_tampered_receiver_invalidates(self, signed_tx):
         signed_tx.receiver = "Eve"
         assert signed_tx.is_valid() is False
+    def test_invalid_amount_rejected_at_core_level():
+        tx = Transaction(sender="Alice", receiver="Bob", amount=-10)
+        # tanpa perlu signature — is_valid() harus return False lebih awal
+        assert tx.is_valid() is False
 
 
 # ── Reward transaction ───────────────────────────────────────────────
