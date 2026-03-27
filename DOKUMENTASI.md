@@ -14,8 +14,8 @@ Pengujian dimulai dengan memanggil *endpoint* `/wallet/new` untuk membuat pasang
 *Gambar 1: Hasil generate wallet yang memberikan Address, Private Key, dan Public Key.*
 
 ### B. Membuat Digital Signature (Tanda Tangan Digital)
-Untuk memastikan keamanan, setiap transaksi harus ditandatangani menggunakan *Private Key* melalui script Python sebelum dikirim ke jaringan.
-![Sign Private Key](https://github.com/fqhhusain/blockchain-py/blob/0c03c047c41a8f6e49168ff7466e32bb7c5085b5/img/Sign_Privatekey_signature.jpeg)
+Untuk memastikan keamanan, setiap transaksi harus ditandatangani menggunakan *Private Key* melalui script Python sebelum dikirim ke jaringan.<br/>
+![Sign Private Key](https://github.com/fqhhusain/blockchain-py/blob/0c03c047c41a8f6e49168ff7466e32bb7c5085b5/img/Sign_Privatekey_signature.jpeg)<br/>
 *Gambar 2: Proses eksekusi script `sign_tx.py` di terminal untuk menghasilkan signature berbentuk Hexadecimal.*
 
 ---
@@ -61,7 +61,7 @@ Karena Node 1 (Alice) berhasil menambang, ia menerima *reward* koin, sedangkan B
 ![Cek Balance Alice](https://github.com/fqhhusain/blockchain-py/blob/0c03c047c41a8f6e49168ff7466e32bb7c5085b5/img/Cek_Balance_alice.jpeg)
 *Gambar 9: Saldo Alice bertambah 10 koin sebagai Mining Reward.*
 
-![Cek Balance Bob]([<C:/Users/Acer/Downloads/cek balance bob.jpeg>](https://github.com/fqhhusain/blockchain-py/blob/0c03c047c41a8f6e49168ff7466e32bb7c5085b5/img/Cek_Balance_bob.jpeg))
+![Cek Balance Bob](https://github.com/fqhhusain/blockchain-py/blob/0c03c047c41a8f6e49168ff7466e32bb7c5085b5/img/Cek_Balance_bob.jpeg)
 *Gambar 10: Saldo Bob bertambah 50 koin dari transaksi yang dikirim pengirim.*
 
 ---
