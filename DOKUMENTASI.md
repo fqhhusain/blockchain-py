@@ -24,25 +24,7 @@
 
 ## 1. Arsitektur Sistem
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    CLIENT (Postman / Browser)                │
-└────────────┬───────────────────────────────────────────────┘
-             │ HTTP
-   ┌──────────▼──────────┐   register/resolve   ┌─────────────┐
-   │   Node 1 :5000      │◄────────────────────►│ Node 2:5001 │
-   │  Flask + Blockchain │                       └──────┬──────┘
-   └──────────┬──────────┘                              │
-              │         ◄───────────────────────────────┘
-              │                  register/resolve
-   ┌──────────▼──────────┐
-   │   Node 3 :5002      │
-   │  Flask + Blockchain │
-   └─────────────────────┘
-
-Setiap node memiliki instance Blockchain sendiri.
-Sinkronisasi menggunakan Nakamoto Consensus (longest valid chain wins).
-```
+![Blockchain Architecture](img/blockchain_architecture.svg)
 
 ### Komponen Utama
 
