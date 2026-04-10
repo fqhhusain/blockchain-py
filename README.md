@@ -1,5 +1,12 @@
 # Blockchain Python
 
+
+| Nama | NRP |
+| :--- | :--- |
+| Evand Khan | 5006231003 |
+| Amoes Noland | 5027231028 |
+| Muhammad Faqih  Husain | 5027231023|
+
 <p align="center">
     Flask-based educational blockchain with ECDSA digital signatures, mining rewards, and 3-node consensus simulation.
 </p>
