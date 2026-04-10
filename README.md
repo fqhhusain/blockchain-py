@@ -11,11 +11,24 @@
   <img src="https://img.shields.io/badge/Tests-129%20passed-brightgreen" alt="Tests">
 </p>
 
+## Table of Contents
+- [Blockchain Python](#blockchain-python)
+  - [Table of Contents](#table-of-contents)
+  - [About The Project](#about-the-project)
+  - [Architecture](#architecture)
+  ## About The Project
+
+(Tulis deskripsi singkat tentang project blockchain kalian di sini jika ada...)
+
+**Anggota Kelompok:**
+
 | Nama | NRP |
 | :--- | :--- |
 | Evand Khan | 5006231003 |
 | Amoes Noland | 5027231028 |
 | Muhammad Faqih Husain | 5027231023 |
+
+## Architecture
 
 ## Table of Contents
 
