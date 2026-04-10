@@ -1,11 +1,6 @@
 # Blockchain Python
 
 
-| Nama | NRP |
-| :--- | :--- |
-| Evand Khan | 5006231003 |
-| Amoes Noland | 5027231028 |
-| Muhammad Faqih  Husain | 5027231023|
 
 <p align="center">
     Flask-based educational blockchain with ECDSA digital signatures, mining rewards, and 3-node consensus simulation.
@@ -17,6 +12,12 @@
     <img src="https://img.shields.io/badge/Crypto-ECDSA%20SECP256K1-green" alt="Crypto">
     <img src="https://img.shields.io/badge/Tests-129%20passed-brightgreen" alt="Tests">
 </p>
+
+| Nama | NRP |
+| :--- | :--- |
+| Evand Khan | 5006231003 |
+| Amoes Noland | 5027231028 |
+| Muhammad Faqih  Husain | 5027231023|
 
 ## Table of Contents
 
