@@ -17,7 +17,7 @@
 | :--- | :--- |
 | Evand Khan | 5006231003 |
 | Amoes Noland | 5027231028 |
-| Muhammad Faqih  Husain | 5027231023|
+| Muhammad Faqih  Husain | 5027231023 |
 
 ## Table of Contents
 
