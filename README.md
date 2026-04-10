@@ -18,7 +18,27 @@
   - [Architecture](#architecture)
   ## About The Project
 
-(Tulis deskripsi singkat tentang project blockchain kalian di sini jika ada...)
+## About The Project
+
+Proyek ini adalah implementasi sistem **Blockchain** sederhana yang dibangun menggunakan **Python** dan **Flask** untuk tujuan edukasi. Proyek ini mendemonstrasikan secara langsung bagaimana mekanisme inti di balik mata uang kripto (seperti Bitcoin) beroperasi di tingkat kode. 
+
+Melalui proyek ini, pengguna dapat memahami siklus hidup sebuah transaksi dari hulu ke hilir, mulai dari pembuatan dompet hingga pencatatan permanen di dalam blok.
+
+**Sorotan Fitur Utama:**
+* **Keamanan Kriptografi (ECDSA SECP256K1):** Pembuatan sepasang kunci (Public/Private Key) dan validasi tanda tangan digital untuk memastikan setiap transaksi hanya dapat dilakukan oleh pemilik sah.
+* **Sistem Penambangan (Proof-of-Work):** Simulasi proses *mining* di mana komputer harus memecahkan teka-teki kriptografi (mencari nilai *Hash* dengan target tertentu) untuk menambahkan blok baru, lengkap dengan pemberian *Mining Reward* (Coinbase).
+* **Simulasi Jaringan Terdesentralisasi:** Mendukung operasional pada 3 *node* (server) yang berbeda, lengkap dengan algoritma konsensus untuk mengatasi konflik dan memastikan semua *node* memiliki salinan buku besar (*ledger*) yang sama dan valid.
+* **Penyimpanan Persisten:** Rantai blok dan antrean transaksi disimpan secara otomatis menggunakan format JSON agar data tidak hilang saat server dimatikan.
+
+Proyek ini sangat cocok dijadikan bahan pembelajaran bagi siapa saja yang ingin mendalami arsitektur dasar dan keamanan sistem desentralisasi.
+
+**Anggota Kelompok:**
+
+| Nama | NRP |
+| :--- | :--- |
+| Evand Khan | 5006231003 |
+| Amoes Noland | 5027231028 |
+| Muhammad Faqih Husain | 5027231023 |
 
 **Anggota Kelompok:**
 
