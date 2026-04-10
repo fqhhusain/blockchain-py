@@ -16,7 +16,6 @@
   - [Table of Contents](#table-of-contents)
   - [About The Project](#about-the-project)
   - [Architecture](#architecture)
-  ## About The Project
 
 ## About The Project
 
