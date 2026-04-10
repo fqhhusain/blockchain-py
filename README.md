@@ -12,20 +12,6 @@
 </p>
 
 ## Table of Contents
-- [Blockchain Python](#blockchain-python)
-  - [Table of Contents](#table-of-contents)
-  - [About The Project](#about-the-project)
-  - [Architecture](#architecture)
-
-**Anggota Kelompok:**
-
-| Nama | NRP |
-| :--- | :--- |
-| Evand Khan | 5006231003 |
-| Amoes Noland | 5027231028 |
-| Muhammad Faqih Husain | 5027231023 |
-
-## Table of Contents
 
 - [Blockchain Python](#blockchain-python)
   - [Table of Contents](#table-of-contents)
@@ -51,6 +37,14 @@
   - [Known Limitations](#known-limitations)
   - [Documentation](#documentation)
     - [Reward Transaction](#reward-transaction)
+
+**Anggota Kelompok:**
+
+| Nama | NRP |
+| :--- | :--- |
+| Evand Khan | 5006231003 |
+| Amoes Noland | 5027231028 |
+| Muhammad Faqih Husain | 5027231023 |
 
 ## About The Project
 
