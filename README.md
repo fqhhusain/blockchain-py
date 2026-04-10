@@ -45,6 +45,9 @@ Melalui proyek ini, pengguna dapat memahami siklus hidup sebuah transaksi dari h
   - [Table of Contents](#table-of-contents)
   - [About The Project](#about-the-project)
   - [Architecture](#architecture)
+  - [Table of Contents](#table-of-contents-1)
+  - [About The Project](#about-the-project-1)
+  - [Architecture](#architecture-1)
   - [Built With](#built-with)
   - [Features](#features)
   - [Getting Started](#getting-started)
@@ -61,6 +64,7 @@ Melalui proyek ini, pengguna dapat memahami siklus hidup sebuah transaksi dari h
   - [Project Structure](#project-structure)
   - [Known Limitations](#known-limitations)
   - [Documentation](#documentation)
+    - [Reward Transaction](#reward-transaction)
 
 ## About The Project
 
@@ -257,3 +261,17 @@ blockchain-py/
 
 - Full technical walkthrough and step-by-step Postman validation:
     - `DOKUMENTASI.md`
+
+
+### Reward Transaction
+
+Mining reward menggunakan model coinbase transaction.
+
+- Reward dibuat otomatis saat endpoint /mine dijalankan.
+- Reward transaction dibuat internal saat mining di `reward_tx = Transaction.create_reward_transaction(miner_address)`bukan transaksi yang dikirim wallet user.
+- Sender reward memakai sentinel address NETWORK.
+- Karena bukan transaksi user, field public_key dan signature bernilai null secara sengaja.
+- Saat sender = NETWORK, proses sign dilewati.
+- Validasi juga langsung menganggap coinbase valid tanpa signature.
+- Integritas reward tetap dijaga oleh hash blok, proof-of-work, dan validasi chain.
+
