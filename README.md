@@ -30,16 +30,6 @@ Melalui proyek ini, pengguna dapat memahami siklus hidup sebuah transaksi dari h
 * **Simulasi Jaringan Terdesentralisasi:** Mendukung operasional pada 3 *node* (server) yang berbeda, lengkap dengan algoritma konsensus untuk mengatasi konflik dan memastikan semua *node* memiliki salinan buku besar (*ledger*) yang sama dan valid.
 * **Penyimpanan Persisten:** Rantai blok dan antrean transaksi disimpan secara otomatis menggunakan format JSON agar data tidak hilang saat server dimatikan.
 
-Proyek ini sangat cocok dijadikan bahan pembelajaran bagi siapa saja yang ingin mendalami arsitektur dasar dan keamanan sistem desentralisasi.
-
-**Anggota Kelompok:**
-
-| Nama | NRP |
-| :--- | :--- |
-| Evand Khan | 5006231003 |
-| Amoes Noland | 5027231028 |
-| Muhammad Faqih Husain | 5027231023 |
-
 **Anggota Kelompok:**
 
 | Nama | NRP |
