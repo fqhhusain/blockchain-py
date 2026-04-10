@@ -53,6 +53,13 @@ Setelah ditambang, kita dapat memeriksa keseluruhan rantai blok dan memvalidasi 
 ![Lihat Chain](https://github.com/fqhhusain/blockchain-py/blob/0c03c047c41a8f6e49168ff7466e32bb7c5085b5/img/Chain_node1.jpeg)
 *Gambar 7: Tampilan lengkap struktur Chain di Node 1 (Panjang chain: 2).*
 
+Catatan: Jadi intinya km akan jelasin coinbase transaction secara garis besar yaitu:
+1. Otomatis dari Sistem: Transaksi hadiah ini diciptakan otomatis oleh sistem (bernama NETWORK) setiap kali sebuah blok berhasil ditambang, bukan dikirim dari dompet pengguna lain.
+
+2. Bebas Tanda Tangan: Karena ini uang cetakan baru dari sistem, transaksi ini mendapat pengecualian khusus—tidak membutuhkan Kunci Publik (Public Key) maupun Tanda Tangan Digital (Signature).
+
+3. Keamanan Terjamin: Meski tanpa tanda tangan, nominal hadiah dan penerimanya tidak bisa dimanipulasi oleh hacker karena datanya sudah dikunci mati oleh sistem Hash dan teka-teki penambangan (Proof-of-Work).
+
 ![Validasi Chain](https://github.com/fqhhusain/blockchain-py/blob/0c03c047c41a8f6e49168ff7466e32bb7c5085b5/img/Validasi_chain1.jpeg)
 *Gambar 8: Hasil validasi membuktikan bahwa hash dan tautan antar blok valid.*
 
